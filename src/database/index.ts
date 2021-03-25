@@ -1,3 +1,3 @@
-import { createConnection } from "typeorm";
+import { createConnection } from 'typeorm';
 
-createConnection().then(() => console.log("Conexão com o banco sucesso!"));
+createConnection().then(() => console.log('Conexão com o banco sucesso!'));
