@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import 'reflect-metadata';
 
-import { AutheticateUserController } from '../modules/accounts/authenticateUser/AuthenticateUserController';
+import { AutheticateUserController } from '../modules/accounts/useCases/authenticateUser/AuthenticateUserController';
 
 const authenticateRoutes = Router();
 

@@ -3,8 +3,8 @@ import { sign } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
 import 'reflect-metadata';
 
-import { AppError } from '../../../errors/AppError';
-import { IUsersRepository } from '../repositories/IUsersRepository';
+import { AppError } from '../../../../errors/AppError';
+import { IUsersRepository } from '../../repositories/IUsersRepository';
 
 interface IRequest {
   email: string;
