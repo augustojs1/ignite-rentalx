@@ -1,139 +1,482 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "title": "RentX Documentation",
-        "description": "This is an API Rent",
-        "version":"1.0.0",
-        "contact": {
-            "email":"augustojs1@gmail.com"
-        }
-    },
-    "paths": {
-        "/categories": {
-            "post": {
-                "tags": ["Category"],
-                "summary": "Create a category",
-                "description": "Create a new category",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "type": "string"
-                                },
-                                "description": {
-                                    "type": "string"
-                                },
-                                "example": {
-                                    "name":"category name sample",
-                                    "description": "Category description sample"
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description":"Created"
-                    },
-                    "500": {
-                        "description": "Category already exists"
-                    }
-                }
-            },
-            "get": {
-                "tags":["Category"],
-                "summary": "List all categories",
-                "description": "List all categories",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "name": {
-                                                "type": "string"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/categories/import": {
-            "post":{
-                "tags":["Category"],
-                "summary": "Upload a new category",
-                "description": "Upload a new category",
-                "requestBody":{
-                    "content":{
-                        "multipart/form-data": {
-                            "schema":{
-                                "type": "string"
-                            },
-                            "properties":{
-                                "file": {
-                                    "type": "string",
-                                    "format": "binary"
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "201":{
-                        "description": "Created"
-                    }
-                }
-            }
-        },
-        "/specifications": {
-            "post": {
-                "tags": ["Specifications"],
-                "summary": "Create a specification",
-                "description": "Create a new specificattion",
-                "requestBody": {
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "$href": "#/definitions/Specification"
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "201":{
-                        "description": "Created"
-                    },
-                    "500":{
-                        "description": "Specification already exists!"
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "Specification": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type":"string"
-                },
-                "description": {
-                    "type": "string"
-                }
-            }
-        }
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Anjo Animal Documentation",
+    "description": "This the api documentation of Anjo Animal",
+    "version": "1.0.0",
+    "contact": {
+      "email": "felipe11.rk@gmail.com"
     }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "name": "Authorization",
+        "type": "apiKey",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "in": "header"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Invalid JWT token"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "password_confirmation": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "accept_terms": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "pets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          }
+        }
+      },
+      "Pet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "pet_owner_name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "additional_information": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          },
+          "pets_images": {
+            "type": "array"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a user",
+        "description": "Create a new user and save on database",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "password_confirmation": {
+                    "type": "string"
+                  },
+                  "latitude": {
+                    "type": "number"
+                  },
+                  "longitude": {
+                    "type": "number"
+                  },
+                  "accept_terms": {
+                    "type": "boolean"
+                  }
+                },
+                "example": {
+                  "name": "John Doe",
+                  "email": "johndoe@gmail.com",
+                  "password": "12345",
+                  "password_confirmation": "12345",
+                  "longitude": -16.7084207,
+                  "latitude": -49.2719639,
+                  "accept_terms": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "password_confirmation": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "accept_terms": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user infos",
+        "description": "Update user save on database",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "old_password": {
+                    "type": "string"
+                  },
+                  "latitude": {
+                    "type": "number"
+                  },
+                  "longitude": {
+                    "type": "number"
+                  }
+                },
+                "example": {
+                  "name": "John Doe",
+                  "email": "johndoe@gmail.com",
+                  "password": "TopSecretPassword",
+                  "old_password": "12345",
+                  "longitude": -16.7084207,
+                  "latitude": -49.2719639
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "old_password": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/verify-email": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Validate E-mail",
+        "description": "Validate user e-mail.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "token": "073b81f4-8f83-44ec-9af9-6ade8f1c5ca0"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users",
+          "Sessions"
+        ],
+        "summary": "Create a user",
+        "description": "Create a new user and save on database",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "email": "johndoe@gmail.com",
+                  "password": "12345"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/avatar": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user avatar",
+        "description": "This is an authenticated route witch require a **token** returned from the session route.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Bad Request",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
