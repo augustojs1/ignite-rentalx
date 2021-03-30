@@ -1,9 +1,10 @@
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
-import 'reflect-metadata';
 
-import { AppError } from '../../../../errors/AppError';
+import 'reflect-metadata';
+import { AppError } from '@shared/errors/AppError';
+
 import { IUsersRepository } from '../../repositories/IUsersRepository';
 
 interface IRequest {
