@@ -46,4 +46,4 @@ class Car {
   }
 }
 
-export { Car };
+export { Car }
