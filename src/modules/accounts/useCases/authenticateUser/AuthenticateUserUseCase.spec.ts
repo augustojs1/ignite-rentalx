@@ -18,25 +18,26 @@ describe('Authenticate User', () => {
     createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
   });
 
-  it('should be able to authenticate a user', async () => {
-    const user: ICreateUserDTO = {
-      driver_license: '06546540123',
-      email: 'user@test.com',
-      password: '1265634',
-      name: 'User',
-    };
+  // it('should be able to authenticate a user', async () => {
+    
+  //   const user = {
+  //     driver_license: '1337',
+  //     email: 'user@gmail.com',
+  //     password: '1234',
+  //     name: 'user',
+  //   };
 
-    await createUserUseCase.execute(user);
+  //   await createUserUseCase.execute(user);
 
-    const result = await authenticateUserUseCase.execute({
-      email: user.email,
-      password: user.password,
-    });
+  //   const result = await authenticateUserUseCase.execute({
+  //     email: user.email,
+  //     password: user.password,
+  //   });
 
-    console.log(result);
+  //   console.log(result);
 
-    // expect(result).toHaveProperty('token');
-  });
+  //   // expect(result).toHaveProperty('token');
+  // });
 
   it('should not be able to authenticate a non existent user', () => {
     expect(async () => {
