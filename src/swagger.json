@@ -1,308 +1,79 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Anjo Animal Documentation",
-    "description": "This the api documentation of Anjo Animal",
-    "version": "1.0.0",
-    "contact": {
-      "email": "felipe11.rk@gmail.com"
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "name": "Authorization",
-        "type": "apiKey",
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "in": "header"
-      }
-    },
-    "responses": {
-      "UnauthorizedError": {
-        "description": "Invalid JWT token"
-      }
-    },
-    "schemas": {
-      "User": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "password_confirmation": {
-            "type": "string"
-          },
-          "latitude": {
-            "type": "number"
-          },
-          "longitude": {
-            "type": "number"
-          },
-          "accept_terms": {
-            "type": "boolean"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "updated_at": {
-            "type": "string"
-          },
-          "token": {
-            "type": "string"
-          },
-          "pets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Pet"
-            }
-          }
-        }
-      },
-      "Pet": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "pet_owner_name": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "gender": {
-            "type": "string"
-          },
-          "latitude": {
-            "type": "number"
-          },
-          "longitude": {
-            "type": "number"
-          },
-          "additional_information": {
-            "type": "string"
-          },
-          "user_id": {
-            "type": "string"
-          },
-          "tag": {
-            "type": "string"
-          },
-          "pets_images": {
-            "type": "array"
-          }
-        }
-      }
-    }
+    "title": "RentX Documentation",
+    "description": "This is a API Rent",
+    "version": "1.0.0"
   },
   "paths": {
-    "/users": {
+    "/sessions": {
       "post": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Create a user",
-        "description": "Create a new user and save on database",
+        "tags": ["Sessions"],
+        "summary": "Authentication user",
+        "description": "Authentication user",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "password_confirmation": {
-                    "type": "string"
-                  },
-                  "latitude": {
-                    "type": "number"
-                  },
-                  "longitude": {
-                    "type": "number"
-                  },
-                  "accept_terms": {
-                    "type": "boolean"
-                  }
-                },
-                "example": {
-                  "name": "John Doe",
-                  "email": "johndoe@gmail.com",
-                  "password": "12345",
-                  "password_confirmation": "12345",
-                  "longitude": -16.7084207,
-                  "latitude": -49.2719639,
-                  "accept_terms": true
+                  "email": { "type": "string", "default": "admin@rentx.com.br" },
+                  "password": { "type": "string", "default": "admin" }
                 }
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "password": {
-                      "type": "string"
-                    },
-                    "password_confirmation": {
-                      "type": "string"
-                    },
-                    "latitude": {
-                      "type": "number"
-                    },
-                    "longitude": {
-                      "type": "number"
-                    },
-                    "accept_terms": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+          "200": { "description": "Success" },
+          "400": { "description": "Email or password incorrect" }
+        }
+      }
+    },
+    "/categories": {
+      "post": {
+        "tags": ["Category"],
+        "summary": "Create a category",
+        "description": "Create a new category",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" }
+                },
+                "example": {
+                  "name": "category name sample",
+                  "description": "category description sample"
                 }
               }
             }
           }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "500": { "description": "Category already exists" }
         }
       },
-      "put": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Update user infos",
-        "description": "Update user save on database",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "old_password": {
-                    "type": "string"
-                  },
-                  "latitude": {
-                    "type": "number"
-                  },
-                  "longitude": {
-                    "type": "number"
-                  }
-                },
-                "example": {
-                  "name": "John Doe",
-                  "email": "johndoe@gmail.com",
-                  "password": "TopSecretPassword",
-                  "old_password": "12345",
-                  "longitude": -16.7084207,
-                  "latitude": -49.2719639
-                }
-              }
-            }
-          }
-        },
+      "get": {
+        "tags": ["Category"],
+        "summary": "List all categories",
+        "description": "List all categories",
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "password": {
-                      "type": "string"
-                    },
-                    "old_password": {
-                      "type": "string"
-                    },
-                    "latitude": {
-                      "type": "number"
-                    },
-                    "longitude": {
-                      "type": "number"
-                    },
-                    "created_at": {
-                      "type": "string"
-                    },
-                    "updated_at": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "description": { "type": "string" }
                     }
                   }
                 }
@@ -312,126 +83,74 @@
         }
       }
     },
-    "/users/verify-email": {
+    "/categories/import": {
       "post": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Validate E-mail",
-        "description": "Validate user e-mail.",
+        "tags": ["Category"],
+        "summary": "Upload a new category",
+        "description": "Upload a new category",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "token": {
-                    "type": "string"
-                  }
-                },
-                "example": {
-                  "token": "073b81f4-8f83-44ec-9af9-6ade8f1c5ca0"
+                  "file": { "type": "string", "format": "binary" }
                 }
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
+          "201": { "description": "Created" }
         }
       }
     },
-    "/users/login": {
+    "/specifications": {
       "post": {
-        "tags": [
-          "Users",
-          "Sessions"
-        ],
-        "summary": "Create a user",
-        "description": "Create a new user and save on database",
+        "tags": ["Specification"],
+        "summary": "Create a specification",
+        "description": "Create a new specification",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                },
-                "example": {
-                  "email": "johndoe@gmail.com",
-                  "password": "12345"
-                }
-              }
-            }
+            "application/json": { "schema": { "$ref": "#/definitions/Specification" } }
           }
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
+          "201": { "description": "Created" },
+          "500": { "description": "Specification already exists" }
         }
       }
     },
-    "/users/avatar": {
-      "patch": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Update user avatar",
-        "description": "This is an authenticated route witch require a **token** returned from the session route.",
-        "security": [
+    "/cars": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Create a car",
+        "description": "Create a car",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/definitions/Car" } } }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Car already exists" }
+        }
+      }
+    },
+    "/cars/images/{id}": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Upload images",
+        "description": "Upload images",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
           {
-            "bearerAuth": []
+            "name": "id",
+            "in": "path",
+            "description": "Car id",
+            "require": true,
+            "schema": { "type": "string" }
           }
         ],
         "requestBody": {
@@ -440,9 +159,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "avatar": {
-                    "type": "string",
-                    "format": "binary"
+                  "images": {
+                    "type": "array",
+                    "items": { "type": "string", "format": "binary" }
                   }
                 }
               }
@@ -450,33 +169,35 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Bad Request",
-            "$ref": "#/components/responses/UnauthorizedError"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
+          "201": { "description": "Created" }
         }
       }
+    }
+  },
+  "definitions": {
+    "Specification": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "Car": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "daily_rate": { "type": "number" },
+        "license_plate": { "type": "string" },
+        "fine_amount": { "type": "number" },
+        "brand": { "type": "string" },
+        "category_id": { "type": "string" }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
     }
   }
 }
