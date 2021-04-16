@@ -4,7 +4,6 @@ import { inject, injectable } from 'tsyringe';
 
 import 'reflect-metadata';
 import auth from '@config/auth';
-import { UsersTokensRepository } from '@modules/accounts/infra/typeorm/repositories/UsersTokensRepository';
 import { IUsersTokensRepository } from '@modules/accounts/repositories/IUsersTokensRepository';
 import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider';
 import { AppError } from '@shared/errors/AppError';
